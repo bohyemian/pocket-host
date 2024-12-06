@@ -1,94 +1,63 @@
-
-
-
-
-
-
-
-.container{
-
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
-  width: 440px;
-  /* border: 1px solid red; */
+.container {
   overflow: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 440px;
   padding: 1rem;
+  translate: -50% -50%;
 
-  & h2{
+  h2 {
     font-size: 3rem;
-    font-weight: bold;
+    font-weight: 900;
   }
 
-  .line{
+  .line {
     height: 4px;
-    background-color: white;
     margin-bottom: 1rem;
+    background-color: #fff;
 
-    & div{
+    div {
       width: 30%;
       height: 100%;
       background: orange;
     }
   }
 
-  .wrapper{
-    width: 900px;
+  .wrapper {
     display: flex;
     justify-content: space-between;
+    width: 900px;
+    /* translate: -460px 0; */
 
-    & > div{
-      width: 440px;
-      display:flex;
+    div {
+      display: flex;
       flex-direction: column;
-      gap:1rem
+      gap: 1rem;
+      width: 440px;
     }
 
-    & input{
-      border: 1px solid white;
-      padding: 1rem;
+    input {
       min-width: 200px;
-      margin: 0.5rem 0;
+      margin: .5rem 0;
+      padding: 1rem;
+      border: 1px solid #fff;
       outline: none;
     }
 
-    & button{
+    button {
       margin-top: 1.5rem;
-      background-color: dodgerblue;
-      color: white;
-      border: none;
       padding: 1rem;
-      cursor: pointer;
+      border: none;
+      background: dodgerblue;
+      color: #fff;
 
-      &:disabled{
-        background-color: #848484;
-        color:black;
-        cursor: not-allowed;
+      &:disabled {
+        background-color: #979797;
+        color: #222;
+        cursor: not-allowed
       }
     }
   }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,11 +1,9 @@
+import '@/pages/newPost/newPost.css';
+import pb from '@/api/pocketbase';
 
-import '@/pages/newPost/newPost.css'
-import pb from '@/api/pocketbase'
-
-
-function render(){
-  const tag = /* html */`
-     <div class="container">
+function render() {
+  const tag = /* html */ `
+    <div class="container">
       <div class="wrapper">
         <div class="brand">
           <label for="brand">브랜드</label>
@@ -39,17 +37,14 @@ function render(){
         </div>
       </div>
     </div>
-  `
+  `;
 
-  document.body.insertAdjacentHTML('beforeend',tag)
+  document.body.insertAdjacentHTML('beforeend', tag);
 
-  newPost()
+  newPost();
 }
 
-
-function newPost(){
-
-  
+function newPost() {
   const add = document.querySelector('.add');
   const cancel = document.querySelector('.cancel');
 
@@ -59,76 +54,38 @@ function newPost(){
   const description = document.querySelector('#description');
   const imgField = document.querySelector('#imgField');
 
-
-  function handleNewPost(){
-    
+  function handleNewPost() {
     const formData = new FormData();
 
-    formData.append('brand',brand.value)
-    formData.append('price',price.value)
-    formData.append('discount',discount.value)
-    formData.append('description',description.value)
-    formData.append('photo',imgField.files[0])
+    formData.append('brand', brand.value);
+    formData.append('price', price.value);
+    formData.append('discount', discount.value);
+    formData.append('description', description.value);
+    formData.append('photo', imgField.files[0]);
 
-    pb.collection('products').create(formData)
-    .then(()=>{
-      location.href = '/src/pages/product/'
-    })
+    pb.collection('products')
+      .create(formData)
+      .then(() => {
+        location.href = '/src/pages/product/';
+      });
   }
 
-  function handleUpload(e){
-    const {files} = e.target;
+  function handleUpload(e) {
+    const { files } = e.target;
 
     const fileImages = Array.from(files).map((file) => ({
-      image:URL.createObjectURL(file),
-      label:file.name
-    }))
-    
-    
-    const file = fileImages.map((f)=> `<img src="${f.image}" alt="${f.label}" />`).join('')
+      image: URL.createObjectURL(file),
+      label: file.name,
+    }));
 
+    const file = fileImages.map((f) => `<img src="${f.image}" alt="${f.label}" />`).join('');
 
-    document.querySelector('.render').insertAdjacentHTML('beforeend',file);
-
+    document.querySelector('.render').insertAdjacentHTML('beforeend', file);
   }
 
-  add.addEventListener('click',handleNewPost)
-  imgField.addEventListener('change',handleUpload)
-  cancel.addEventListener('click',()=> history.back())
-
+  add.addEventListener('click', handleNewPost);
+  imgField.addEventListener('change', handleUpload);
+  cancel.addEventListener('click', () => history.back());
 }
 
-
-
-
-render()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+render();

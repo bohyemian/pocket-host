@@ -1,62 +1,45 @@
-
-
-
-.container{
+.container {
   margin: 0 auto;
-  
-  & img{
+
+  img {
     width: 100%;
   }
 
-  & ul{
-    display:grid;
+  ul {
+    display: grid;
     place-items: center;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
     margin: 2.5rem;
 
-    & li {
-      & a{
-        max-width: 30vw;
+    li {
+      a {
         display: flex;
         flex-direction: column;
-        gap:0.6rem;
+        gap: 0.6rem;
       }
     }
-    
-    .description{
-      font-size: 0.8rem;
-      white-space: nowrap;
+
+    .description {
       overflow: hidden;
+      font-size: 0.8rem;
+      line-height: 1.2;
+      white-space: nowrap;
       text-overflow: ellipsis;
     }
-    
-    .price{
+
+    .price {
       color: gray;
       text-decoration: line-through;
     }
 
-    .discount{
+    .discount {
       font-size: 1.2rem;
-      color: red;
-    }
-    
-    .real-price{
-      font-weight: bold;
+      color: rgb(252, 93, 93);
     }
 
-    
+    .real-price {
+      font-weight: 900;
+    }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-

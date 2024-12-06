@@ -1,19 +1,11 @@
+import '@/pages/register/register.css';
+import { gsap } from 'gsap';
+import pb from '../../api/pocketbase';
+import Swal from 'sweetalert2';
 
-import '@/pages/register/register.css'
-import { gsap } from 'gsap'
-import pb from '../../api/pocketbase'
-import Swal from 'sweetalert2'
-
-
-console.log('register');
-
-
-
-
-function render(){
-  
-  const tag = ` 
-     <div class="container">
+function render() {
+  const tag = `
+    <div class="container">
         <h2>회원가입</h2>
         <div class="line">
           <div></div>
@@ -39,91 +31,59 @@ function render(){
           </div>
         </div>
       </div>
-  `
-  document.body.insertAdjacentHTML('beforeend',tag)
+  `;
+  document.body.insertAdjacentHTML('beforeend', tag);
 }
 
+function register() {
+  const idField = document.querySelector('#idField');
+  const pwField = document.querySelector('#pwField');
+  const next1 = document.querySelector('.next-1');
+  const next2 = document.querySelector('.next-2');
 
+  function handleValidation(e) {
+    const target = e.currentTarget;
 
-
-
-function register(){
- 
-  const idField = document.querySelector('#idField')
-  const pwField = document.querySelector('#pwField')
-  const next1 = document.querySelector('.next-1')
-  const next2 = document.querySelector('.next-2')
-  
-  function handleValidation(e){
-    const target = e.currentTarget
-
-    if(target.value.length > 5){
+    if (target.value.length > 5) {
       target.nextElementSibling.disabled = false;
-    }else{
+    } else {
       target.nextElementSibling.disabled = true;
     }
   }
 
-  function handleNext(){
-    gsap.to('.wrapper',{x:-460,ease:'power2.inOut'})
-    gsap.to('.line > div',{width:'70%'})
+  function handleNext() {
+    gsap.to('.wrapper', { x: -460, ease: 'power2.inOut' });
+    gsap.to('.line > div', { width: '70%' });
   }
 
-  function handleRegister(){
-    pb.collection('users').create({
-      email:idField.value,
-      password:pwField.value,
-      passwordConfirm:pwField.value
-    })
-    .then(()=>{
-      Swal.fire({ text:'회원가입 완료! 로그인 페이지로 이동합니다!' })
-      .then(()=>{
-        location.href = '/src/pages/login/'
+  function handleRegister() {
+    pb.collection('users')
+      .create({
+        email: idField.value,
+        password: pwField.value,
+        passwordConfirm: pwField.value,
       })
-    })
-    .catch(()=>{
-      
-      Swal.fire({text:'잘못된 정보를 입력하셨습니다.'})
-      .then(()=>{
-        // idField.value = '';
-        // pwField.value = '';
-        // gsap.to('.wrapper',{x:0,ease:'power2.inOut'})
-        location.reload()
+      .then(() => {
+        Swal.fire({ text: '회원가입 완료! 로그인 페이지로 이동합니다!' }).then(() => {
+          location.href = '/src/pages/login/';
+        });
       })
-
-    })
-    
-
+      .catch(() => {
+        Swal.fire({ text: '잘못된 정보를 입력하셨습니다.' }).then(() => {
+          // idField.value = '';
+          // pwField.value = '';
+          // gsap.to('.wrapper',{x:0,ease:'power2.inOut'})
+          location.reload();
+        });
+      });
   }
 
-  idField.addEventListener('input',handleValidation);
-  pwField.addEventListener('input',handleValidation);
+  idField.addEventListener('input', handleValidation);
+  pwField.addEventListener('input', handleValidation);
 
-  next1.addEventListener('click',handleNext)
-  next2.addEventListener('click',handleRegister)
-
+  next1.addEventListener('click', handleNext);
+  next2.addEventListener('click', handleRegister);
 }
 
-
-render()
-register()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+render();
+register();

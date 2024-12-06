@@ -1,70 +1,45 @@
-
-
-
-
-.container{
-  max-width: 400px;
+.container {
   position: absolute;
-  left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  left: 50%;
+  max-width: 400px;
   text-align: center;
+  translate: -50% -50%;
 
-  & h1 {
+  h1 {
     font-size: 3rem;
-    font-weight: bold;
+    font-weight: 900;
   }
 
-  & hr{
-    margin: 2rem 0 ;
+  hr {
     height: 4px;
-    background-color: white;
+    margin: 2rem 0;
+    background: #fff;
   }
 
-  & form{
+  form {
     margin-bottom: 5rem;
 
-    & input{
-      box-sizing: border-box;
-      border: 1px solid rgb(122, 122, 122);
+    input {
+      min-width: 300pxmargin: .2rem 0;
       padding: 1rem;
-      min-width: 300px;
-      margin: 0.2rem 0;
+      border: 1px solid rgb(122, 122, 122);
+      box-sizing: border-box;
       outline: none;
 
-      &:focus{
-        border: 1px solid dodgerblue;
+      &:focus {
+        border: 1px solid dodgerblue
       }
     }
 
-    & button[type="submit"]{
+    button[type=submit] {
+      width: 100%;
+      padding: 1rem;
       margin-top: 1.5rem;
       border: none;
       background: dodgerblue;
       color: white;
-      padding: 1rem;
-      cursor:pointer;
-      width: 100%;
+      cursor: pointer;
     }
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

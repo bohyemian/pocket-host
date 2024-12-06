@@ -23,20 +23,19 @@ class ProductList extends LitElement {
       .container {
         margin: 0 auto;
 
-        & img {
+        img {
           width: 100%;
         }
 
-        & ul {
+        ul {
           display: grid;
           place-items: center;
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 2rem;
           margin: 2.5rem;
 
-          & li {
-            & a {
-              max-width: 30vw;
+          li {
+            a {
               display: flex;
               flex-direction: column;
               gap: 0.6rem;
@@ -44,9 +43,10 @@ class ProductList extends LitElement {
           }
 
           .description {
-            font-size: 0.8rem;
-            white-space: nowrap;
             overflow: hidden;
+            font-size: 0.8rem;
+            line-height: 1.2;
+            white-space: nowrap;
             text-overflow: ellipsis;
           }
 
@@ -57,11 +57,11 @@ class ProductList extends LitElement {
 
           .discount {
             font-size: 1.2rem;
-            color: red;
+            color: rgb(252, 93, 93);
           }
 
           .real-price {
-            font-weight: bold;
+            font-weight: 900;
           }
         }
       }
@@ -91,16 +91,18 @@ class ProductList extends LitElement {
     this.loginData = JSON.parse(localStorage.getItem('auth') ?? '{}');
   }
 
+  //attributeChangedCallback
   updated(changedProperties: Map<string | number | symbol, unknown>): void {
     super.updated(changedProperties);
 
     const item = this.renderRoot.querySelectorAll('.product-item');
 
-    if (item.length > 0) {
+    if (item.length) {
       gsap.from(item, {
         y: 30,
         opacity: 0,
         stagger: 0.2,
+        delay: 0.5,
       });
     }
   }

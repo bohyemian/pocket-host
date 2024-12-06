@@ -1,9 +1,4 @@
-
-
-
-
-
-.container{
+.container {
   padding: 2rem;
   margin: 0 auto;
 
@@ -11,7 +6,7 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap:1.5rem;
+    gap: 1.5rem;
     max-width: 400px;
   }
 
@@ -23,44 +18,23 @@
 }
 
 .real-price,
-.buttonGroup{
+.buttonGroup {
   text-align: center;
 }
 
-button{
+button {
   padding: 0.4rem 1rem;
   border: 1px solid black;
   cursor: pointer;
-  margin-top:2rem;
+  margin-top: 2rem;
 }
 
-
-.cancel{
+.cancel {
   background-color: rgb(255, 21, 185);
-  color:white;
+  color: white;
 }
 
-.modify{
+.modify {
   background-color: rgb(21, 91, 255);
-  color:white;
+  color: white;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

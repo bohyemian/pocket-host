@@ -1,41 +1,33 @@
+import '@/pages/detail/detail.css';
+import pb from '@/api/pocketbase';
+import { getPbImageURL } from '@/api/getPbImageURL';
 
-
-import '@/pages/detail/detail.css'
-import pb from '@/api/pocketbase'
-import { getPbImageURL } from '@/api/getPbImageURL'
-
-
-function render(){
-
+function render() {
   const tag = `
-     <div class="container">
+    <div class="container">
       <div class="buttonGroup">
         <button type="button" class="cancel">취소</button>
         <button type="button" class="modify">수정</button>
       </div>
     </div>
-  `
+  `;
 
-  document.body.insertAdjacentHTML('beforeend',tag)
+  document.body.insertAdjacentHTML('beforeend', tag);
 
-  renderProduct()
+  renderProduct();
 }
 
-
-async function renderProduct(){
-
-  
-  // 상품 정보 가져오기 
+async function renderProduct() {
+  // 상품 정보 가져오기
   const urlParams = new URLSearchParams(location.search);
   const id = urlParams.get('product');
-  
 
   const product = await pb.collection('products').getOne(id);
 
-  const {brand,description,price,discount} = product;
-  
-   // 가져온 상품 정보 랜더링 하기 
-  const tag = /* html */`
+  const { brand, description, price, discount } = product;
+
+  // 가져온 상품 정보 랜더링 하기
+  const tag = /* html */ `
     <div class="wrapper">
       <div class="brand">
         <label for="brand">브랜드</label>
@@ -61,28 +53,24 @@ async function renderProduct(){
         <input type="text" id="discount" value="${discount}" />
       </div>
 
-      <div class="real-price">${price - (price * discount * 0.01)}원</div>
+      <div class="real-price">${price - price * discount * 0.01}원</div>
     </div>
-  `
-  document.querySelector('.container').insertAdjacentHTML('afterbegin',tag)
+  `;
+  document.querySelector('.container').insertAdjacentHTML('afterbegin', tag);
 
-  detail(product,id)
+  detail(product, id);
 }
 
-
-function detail(product,id){
-
-  const {price, discount} = product;
+function detail(product, id) {
+  const { price, discount } = product;
   const priceInput = document.querySelector('#price');
   const discountInput = document.querySelector('#discount');
   const cancel = document.querySelector('.cancel');
   const modify = document.querySelector('.modify');
-  
 
-  function handleDiscount(){
+  function handleDiscount() {
     let newPrice = price;
     let newDiscount = discount;
-
 
     newPrice = priceInput.value;
     newDiscount = discountInput.value;
@@ -91,51 +79,29 @@ function detail(product,id){
     const realPrice = newPrice - ratio;
 
     document.querySelector('.real-price').textContent = realPrice.toLocaleString() + '원';
-    
   }
 
-  function handleModify(){
-    
+  function handleModify() {
     const brand = document.querySelector('#brand').value;
     const price = document.querySelector('#price').value;
     const discount = document.querySelector('#discount').value;
     const description = document.querySelector('#description').value;
 
-    pb.collection('products').update(id,{ brand, price, discount, description })
-    .then(()=>{
-      location.href = '/src/pages/product/'
-    })
-    .catch(()=>{
-      console.error('...');
-    })
-
+    pb.collection('products')
+      .update(id, { brand, price, discount, description })
+      .then(() => {
+        location.href = '/src/pages/product/';
+      })
+      .catch(() => {
+        console.error('...');
+      });
   }
 
-  priceInput.addEventListener('input',handleDiscount)
-  discountInput.addEventListener('input',handleDiscount)
+  priceInput.addEventListener('input', handleDiscount);
+  discountInput.addEventListener('input', handleDiscount);
 
-
-  cancel.addEventListener('click',()=> history.back())
-  modify.addEventListener('click',handleModify)
-
+  cancel.addEventListener('click', () => history.back());
+  modify.addEventListener('click', handleModify);
 }
 
-
-
-
-render()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+render();

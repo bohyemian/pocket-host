@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "pocketbase": ".\\pocketbase\\pocketbase serve"
+    "preview": "vite preview"
   },
   "dependencies": {
     "gsap": "^3.12.5",
