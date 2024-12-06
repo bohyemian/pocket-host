@@ -1,140 +1,147 @@
-import { LitElement, html, css, CSSResultGroup } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import resetCSS from '../Layout/resetCSS';
-import gsap from 'gsap';
-import pb from '../api/pocketbase';
-import Swal from 'sweetalert2';
+import { LitElement,html,css, CSSResultGroup } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
+import resetCSS from "../Layout/resetCSS";
+import gsap from "gsap";
+import pb from "../api/pocketbase";
+import Swal from "sweetalert2";
+
+
+
 
 @customElement('register-element')
 class Register extends LitElement {
-  @property({ type: Object }) valid = {
-    step1: false,
-    step2: false,
-  };
 
-  static styles: CSSResultGroup = [
+  @property({type:Object}) valid = {
+    step1:false,
+    step2:false,
+  }
+
+
+  static styles:CSSResultGroup = [
     resetCSS,
     css`
-      .container {
-        overflow: hidden;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 440px;
-        padding: 1rem;
-        translate: -50% -50%;
+    .container{
 
-        h2 {
-          font-size: 3rem;
-          font-weight: 900;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      width: 440px;
+      /* border: 1px solid red; */
+      overflow: hidden;
+      padding: 1rem;
+
+      & h2{
+        font-size: 3rem;
+        font-weight: bold;
+      }
+
+      .line{
+        height: 4px;
+        background-color: white;
+        margin-bottom: 1rem;
+
+        & div{
+          width: 30%;
+          height: 100%;
+          background: orange;
+        }
+      }
+
+      .wrapper{
+        width: 900px;
+        display: flex;
+        justify-content: space-between;
+
+        & > div{
+          width: 440px;
+          display:flex;
+          flex-direction: column;
+          gap:1rem
         }
 
-        .line {
-          height: 4px;
-          margin-bottom: 1rem;
-          background-color: #fff;
-
-          div {
-            width: 30%;
-            height: 100%;
-            background: orange;
-          }
+        & input{
+          border: 1px solid white;
+          padding: 1rem;
+          min-width: 200px;
+          margin: 0.5rem 0;
+          outline: none;
         }
 
-        .wrapper {
-          display: flex;
-          justify-content: space-between;
-          width: 900px;
-          /* translate: -460px 0; */
+        & button{
+          margin-top: 1.5rem;
+          background-color: dodgerblue;
+          color: white;
+          border: none;
+          padding: 1rem;
+          cursor: pointer;
 
-          div {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            width: 440px;
-          }
-
-          input {
-            min-width: 200px;
-            margin: 0.5rem 0;
-            padding: 1rem;
-            border: 1px solid #fff;
-            outline: none;
-          }
-
-          button {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border: none;
-            background: dodgerblue;
-            color: #fff;
-
-            &:disabled {
-              background-color: #979797;
-              color: #222;
-              cursor: not-allowed;
-            }
+          &:disabled{
+            background-color: #848484;
+            color:black;
+            cursor: not-allowed;
           }
         }
       }
-    `,
-  ];
+    }
 
-  get idField() {
+    `
+  ]
+
+  get idInput(){
     return this.renderRoot.querySelector<HTMLInputElement>('#idField')!;
   }
-
-  get pwField() {
+  get pwInput(){
     return this.renderRoot.querySelector<HTMLInputElement>('#pwField')!;
   }
 
-  handleValidation(e: Event) {
+  handleValidation(e:Event){
     const target = e.currentTarget as HTMLInputElement;
-    const stepKey = target.id === 'idField' ? 'step1' : 'step2';
 
-    console.log(stepKey);
-
+    const stepKey = target.id === 'idField' ? 'step1' : 'step2'
     this.valid[stepKey] = target.value.length > 5;
+    
 
-    if (target.value.length > 5) this.requestUpdate();
+    if(target.value.length > 5) this.requestUpdate()
+
   }
 
-  handleNext() {
+  handleStep1(){
     const wrapper = this.renderRoot.querySelector('.wrapper');
-    const line = this.renderRoot.querySelector('.line > div');
-
-    gsap.to(wrapper, { x: -460, ease: 'power2.inOut' });
-    gsap.to(line, { width: '70%' });
+    gsap.to(wrapper,{x:-460})
   }
 
-  handleRegister() {
-    pb.collection('users')
-      .create({
-        email: this.idField.value,
-        password: this.pwField.value,
-        passwordConfirm: this.pwField.value,
+  handleStep2(){
+
+    pb.collection('users').create({
+      email:this.idInput.value,
+      password:this.pwInput.value,
+      passwordConfirm:this.pwInput.value
+    })
+    .then(()=>{
+      Swal.fire({text:'회원가입 완료! 로그인 페이지로 이동합니다!'})
+      .then(()=>{
+        location.href = '/src/pages/login/'
       })
-      .then(() => {
-        Swal.fire({
-          text: '회원가입 완료! 로그인 페이지로 이동합니다!',
-        }).then(() => {
-          location.href = '/src/pages/login/';
-        });
+    })
+    .catch(()=>{
+
+      
+      Swal.fire({text:'잘못된 정보를 입력하셨습니다.'})
+      .then(()=>{
+        // this.valid.step1 = false;
+        // this.valid.step2 = false;
+        // this.requestUpdate();
+        // this.idInput.value = ''
+        // this.pwInput.value = ''
+        // const wrapper = this.renderRoot.querySelector('.wrapper');
+        // gsap.to(wrapper,{x:0})
+        location.reload();
       })
-      .catch(() => {
-        Swal.fire({
-          text: '잘못된 정보를 입력하셨습니다.',
-        }).then(() => {
-          this.idField.value = '';
-          this.pwField.value = '';
-          gsap.to('.wrapper', { x: 0, ease: 'power2.inOut' });
-          // location.reload();
-        });
-      });
+    })
   }
 
-  render() {
-    console.log('first');
+  render(){
     return html`
       <div class="container">
         <h2>회원가입</h2>
@@ -148,8 +155,16 @@ class Register extends LitElement {
               아이디를 입력해주세요.
             </h3>
             <label for="idField"></label>
-            <input type="email" id="idField" @input=${this.handleValidation.bind(this)} placeholder="아이디(이메일)입력" />
-            <button disabled type="button" class="next-1" ?disabled=${!this.valid.step1} @click=${this.handleNext}>다음</button>
+            <input 
+              @input=${this.handleValidation}
+              type="email" 
+              id="idField" 
+              placeholder="아이디(이메일)입력"/>
+            <button 
+            @click=${this.handleStep1}
+            ?disabled=${!this.valid.step1}
+            type="button" 
+            class="next-1">다음</button>
           </div>
           <div class="step-2">
             <h3>
@@ -157,11 +172,31 @@ class Register extends LitElement {
               비밀번호를 입력해주세요.
             </h3>
             <label for="pwField"></label>
-            <input type="password" id="pwField" @input=${this.handleValidation.bind(this)} placeholder="비밀번호 입력" />
-            <button disabled type="button" class="next-2" ?disabled=${!this.valid.step2} @click=${this.handleRegister}>회원가입</button>
+            <input 
+            @input=${this.handleValidation}
+            type="password" 
+            id="pwField" 
+            placeholder="비밀번호 입력"/>
+            <button 
+            @click=${this.handleStep2}
+            ?disabled=${!this.valid.step2}
+            type="button" 
+            class="next-2">회원가입</button>
           </div>
         </div>
       </div>
-    `;
+    `
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+

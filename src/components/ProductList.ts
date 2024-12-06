@@ -1,8 +1,8 @@
 import { LitElement, html, css, CSSResultGroup } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import resetCSS from '../Layout/resetCSS';
 import { Auth, Product } from '../@types/type';
-import { getPbImageURL } from '../api/getPblmageURL';
-import resetCss from '../Layout/resetCSS';
+import { getPbImageURL } from '../api/getPbImageURL';
 import gsap from 'gsap';
 
 @customElement('product-list')
@@ -18,24 +18,25 @@ class ProductList extends LitElement {
   @state() loginData = {} as Auth;
 
   static styles: CSSResultGroup = [
-    resetCss,
+    resetCSS,
     css`
       .container {
         margin: 0 auto;
 
-        img {
+        & img {
           width: 100%;
         }
 
-        ul {
+        & ul {
           display: grid;
-          place-item: center;
+          place-items: center;
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 2rem;
           margin: 2.5rem;
 
-          li {
-            a {
+          & li {
+            & a {
+              max-width: 30vw;
               display: flex;
               flex-direction: column;
               gap: 0.6rem;
@@ -43,10 +44,9 @@ class ProductList extends LitElement {
           }
 
           .description {
-            overflow: hidden;
             font-size: 0.8rem;
-            line-height: 1.2;
             white-space: nowrap;
+            overflow: hidden;
             text-overflow: ellipsis;
           }
 
@@ -57,23 +57,24 @@ class ProductList extends LitElement {
 
           .discount {
             font-size: 1.2rem;
-            color: rgb(252, 93, 93);
+            color: red;
           }
 
           .real-price {
-            font-weight: 900;
+            font-weight: bold;
           }
         }
       }
+
       .new-post {
-        position: fixed;
-        left: 50%;
-        bottom: 2rem;
         padding: 0.5rem 1rem;
         background-color: dodgerblue;
         color: white;
         border-radius: 20px;
+        position: fixed;
+        left: 50%;
         transform: translateX(-50%);
+        bottom: 2rem;
       }
     `,
   ];
@@ -85,22 +86,21 @@ class ProductList extends LitElement {
 
   async fetchData() {
     const response = await fetch(`${import.meta.env.VITE_PB_API}/collections/products/records`);
-    this.data = await response.json();
+    const data = await response.json();
+    this.data = data;
     this.loginData = JSON.parse(localStorage.getItem('auth') ?? '{}');
   }
 
-  //attributeChangedCallback
   updated(changedProperties: Map<string | number | symbol, unknown>): void {
     super.updated(changedProperties);
 
     const item = this.renderRoot.querySelectorAll('.product-item');
 
-    if (item.length) {
+    if (item.length > 0) {
       gsap.from(item, {
         y: 30,
         opacity: 0,
         stagger: 0.2,
-        delay: 0.5,
       });
     }
   }
@@ -112,24 +112,27 @@ class ProductList extends LitElement {
       <div class="container">
         <ul>
           ${this.data.items.map(
-            (item) =>
-              html`<li class="product-item">
-            <a href=${isAuth ? `/src/pages/detail/index.html?product=${item.id}` : '/'}>
-            <figure>
-              <img src="${getPbImageURL(item)}" alt="">
-            </figure>${item.brand}</span>
-            <span class="description">${item.description}</span>
-            <span class="price">${item.price}원</span>
-            <div>
-              <span class="discount">${item.discount ? item.discount + '%' : ''}</span>
-              <span class="real-price">${item.discount ? (item.price * (1 - item.discount / 100)).toLocaleString() : item.price}원</span>
-            </div>
-          </a>
-        </li>`
+            (item) => html`
+              <li class="product-item">
+                <a href="${isAuth ? `/src/pages/detail/index.html?product=${item.id}` : `/`}">
+                  <figure>
+                    <img src="${getPbImageURL(item)}" alt="" />
+                  </figure>
+                  <span class="brand">${item.brand}</span>
+                  <span class="description">${item.description}</span>
+                  <span class="price">${item.price.toLocaleString()}원</span>
+                  <div>
+                    <span class="discount">${item.discount}%</span>
+                    <span class="real-price">${(item.price - item.price * item.discount * 0.01).toLocaleString()}원</span>
+                  </div>
+                </a>
+              </li>
+            `
           )}
         </ul>
-        <a class="new-post" href="/src/pages/newPost/">+ 상품추가</a>
       </div>
+
+      <a class="new-post" href="/src/pages/newPost/">+ 상품추가</a>
     `;
   }
 }

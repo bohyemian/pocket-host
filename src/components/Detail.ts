@@ -1,9 +1,9 @@
-import { LitElement, html, css, CSSResultGroup } from 'lit';
+import { CSSResultGroup, LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Item } from '../@types/type';
 import resetCSS from '../Layout/resetCSS';
 import pb from '../api/pocketbase';
-import { getPbImageURL } from '../api/getPblmageURL';
+import { Item } from '../@types/type';
+import { getPbImageURL } from '../api/getPbImageURL';
 
 @customElement('detail-element')
 class Detail extends LitElement {
