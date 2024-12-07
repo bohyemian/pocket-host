@@ -1,18 +1,18 @@
-import{r as l,i as d,n as g,a as u,b as m,x as p,t as h}from"./Header-CNObJ4W4.js";import{g as f}from"./getPbImageURL-Df5AVti8.js";import{g as b}from"./index-DjKJqAo0.js";var w=Object.defineProperty,y=Object.getOwnPropertyDescriptor,c=(e,t,o,s)=>{for(var a=s>1?void 0:s?y(t,o):t,i=e.length-1,n;i>=0;i--)(n=e[i])&&(a=(s?n(t,o,a):n(a))||a);return s&&a&&w(t,o,a),a};let r=class extends m{constructor(){super(...arguments),this.data={items:[],page:0,perPage:0,totalItems:0,totalPages:0},this.loginData={}}connectedCallback(){super.connectedCallback(),this.fetchData()}async fetchData(){const t=await(await fetch("https://tomboy.pockethost.io/api/collections/products/records")).json();this.data=t,this.loginData=JSON.parse(localStorage.getItem("auth")??"{}")}updated(e){super.updated(e);const t=this.renderRoot.querySelectorAll(".product-item");t.length&&b.from(t,{y:30,opacity:0,stagger:.2,delay:.5})}render(){const{isAuth:e}=this.loginData;return p`
+import{r as l,i as d,n as g,a as u,b as m,x as p,t as h}from"./Header-DvZl2517.js";import{g as f}from"./getPbImageURL-B925raAG.js";import{g as b}from"./index-DjKJqAo0.js";var w=Object.defineProperty,y=Object.getOwnPropertyDescriptor,c=(t,e,o,s)=>{for(var a=s>1?void 0:s?y(e,o):e,i=t.length-1,n;i>=0;i--)(n=t[i])&&(a=(s?n(e,o,a):n(a))||a);return s&&a&&w(e,o,a),a};let r=class extends m{constructor(){super(...arguments),this.data={items:[],page:0,perPage:0,totalItems:0,totalPages:0},this.loginData={}}connectedCallback(){super.connectedCallback(),this.fetchData()}async fetchData(){const e=await(await fetch("https://lucky-beomki.pockethost.io/api/collections/products/records")).json();this.data=e,this.loginData=JSON.parse(localStorage.getItem("auth")??"{}")}updated(t){super.updated(t);const e=this.renderRoot.querySelectorAll(".product-item");e.length&&b.from(e,{y:30,opacity:0,stagger:.2,delay:.5})}render(){const{isAuth:t}=this.loginData;return p`
       <div class="container">
         <ul>
-          ${this.data.items.map(t=>p`
+          ${this.data.items.map(e=>p`
               <li class="product-item">
-                <a href="${e?`/src/pages/detail/index.html?product=${t.id}`:"/"}">
+                <a href="${t?`/src/pages/detail/index.html?product=${e.id}`:"/"}">
                   <figure>
-                    <img src="${f(t)}" alt="" />
+                    <img src="${f(e)}" alt="" />
                   </figure>
-                  <span class="brand">${t.brand}</span>
-                  <span class="description">${t.description}</span>
-                  <span class="price">${t.price.toLocaleString()}원</span>
+                  <span class="brand">${e.brand}</span>
+                  <span class="description">${e.description}</span>
+                  <span class="price">${e.price.toLocaleString()}원</span>
                   <div>
-                    <span class="discount">${t.discount}%</span>
-                    <span class="real-price">${(t.price-t.price*t.discount*.01).toLocaleString()}원</span>
+                    <span class="discount">${e.discount}%</span>
+                    <span class="real-price">${(e.price-e.price*e.discount*.01).toLocaleString()}원</span>
                   </div>
                 </a>
               </li>
